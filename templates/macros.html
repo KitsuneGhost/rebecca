@@ -1,0 +1,10 @@
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">{% endmacro %}
+{% macro picture_field(item) %}
+<label>Picture <span class="muted">optional · JPG, PNG or WebP · under 5 MB</span><input type="file" name="picture" accept="image/jpeg,image/png,image/webp"></label>
+{% if item and item.picture %}<img class="preview" src="{{ url_for('static', filename='uploads/' ~ item.picture) }}" alt="Current picture"><label class="check"><input type="checkbox" name="remove_picture"> Remove current picture</label>{% endif %}
+{% endmacro %}
+{% macro recipe_card(recipe) %}
+<a class="card" href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+{% if recipe.picture %}<img class="card-image" src="{{ url_for('static', filename='uploads/' ~ recipe.picture) }}" alt="{{ recipe.name }}" loading="lazy">{% else %}<div class="card-image placeholder" aria-hidden="true">No picture</div>{% endif %}
+<div class="card-body"><h2>{{ recipe.name }}</h2><div class="card-meta"><span class="stars" aria-label="{{ recipe.rating }} out of 5 stars">{{ '★' * recipe.rating }}{{ '☆' * (5-recipe.rating) }}</span><span>{{ recipe.cooking_time }} min</span></div></div></a>
+{% endmacro %}
